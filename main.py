@@ -1,13 +1,15 @@
 from task_manager import TaskManager
+from ai_service import create_simple_task
 
 def print_menu():
 
     print("\n--- Task manager intelligent ---")
     print("1.- Add task")
-    print("2.- List tasks")
-    print("3.- Complete task")
-    print("4.- Remove task")
-    print("5.- Exit")
+    print("2.- Add complex task (with IA)")
+    print("3.- List tasks")
+    print("4.- Complete task")
+    print("5.- Remove task")
+    print("6.- Exit")
 
 def main():
     manager = TaskManager();
@@ -20,14 +22,23 @@ def main():
                     description = input("Task description: ")
                     manager.add_task(description)
                 case 2:
-                    manager.list_tasks()
+                    description = input("Task description: ")
+                    subtasks = create_simple_task(description)
+                    for subtask in subtasks:
+                        if not subtask.startswith("Error:"):
+                            manager.add_task(subtask)
+                        else:
+                            print(subtask)
+                            break
                 case 3:
+                    manager.list_tasks()
+                case 4:
                     task_id = int(input("Task id to complete: "))
                     manager.complete_task(task_id)
-                case 4:
+                case 5:
                     task_id = int(input("Task id to remove: "))
                     manager.delete_task(task_id)
-                case 5:
+                case 6:
                     print ("Exit!")
                     break
                 case _:
